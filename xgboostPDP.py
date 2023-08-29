@@ -54,7 +54,7 @@ def plot_pdp_feature_importance(model,test,x):
     # create figures with axs,根据特征个数建立图片
     fig, axs = create_subplot_figure(featuresNum+1)
     for i in range(featuresNum):
-        pdp = partial_dependence(clf,test[x],[features[i]],kind='both',grid_resolution=50) #参数both，表示除了pdp均值外会计算出每个样本的ice
+        pdp = partial_dependence(model,test[x],[features[i]],kind='both',grid_resolution=50) #参数both，表示除了pdp均值外会计算出每个样本的ice
         sns.set_theme(style='ticks',palette='deep',font_scale=1.1)
         plot_x = pd.Series(pdp['values'][0]).rename('x')
         plot_i = pdp['individual'] #获取每个样本的ice数组
@@ -91,12 +91,12 @@ def plot_pdp_feature_importance(model,test,x):
 
 def xgboostPDP(data,x,y,type='r',test_size=0.3,**kwargs):
     ''' 
-    函数执行3个步骤：1划分训练集和测试集；2xgboost建模；3绘制pdp图
+    函数执行3个步骤:1划分训练集和测试集; 2xgboost建模; 3绘制pdp图
     Args:
         data: (pandas.DataFrame): 数据集
         x (list): feature list, 模型特征
         y (list): 模型标签
-        type (string): r or c，回归模型时使用'r',分类模型使用'c'
+        type (string): r or c, 回归模型时使用'r',分类模型使用'c'
         test_size (float): 测试集比例
         **kwargs : args for XGBRegressor or XGBClassifier, using "??XGBRegressor" for more info
     returns:
